@@ -1,6 +1,17 @@
 import Head from "next/head";
 import Link from "next/link";
+import { useQuery } from "urql";
+import { PRODUCT_QUERY } from "../lib/query.js";
 export default function Home() {
+	 //Fetch products from strapi
+	 const [results] = useQuery({ query: PRODUCT_QUERY });
+	 const { data, fetching, error } = results;
+   
+	 //Checks for the data coming in
+	 if (fetching) return <p>Loading...</p>;
+	 if (error) return <p>Oh no... {error.message}</p>;
+	 const products = data.products.data;
+	 console.log(products)
 	return (
 		<>
 			<Head>
@@ -10,9 +21,12 @@ export default function Home() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<main>
-        <h1>Hello next</h1>
-		<Link href={'/about'}>About</Link>
-      </main>
+				<h1>Hello next</h1>
+				{products.map((product)=>(
+					<h1>{product.attributes.title}</h1>
+				))}
+				<Link href={"/about"}>About</Link>
+			</main>
 		</>
 	);
 }
