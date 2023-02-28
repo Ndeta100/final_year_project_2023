@@ -1,3 +1,4 @@
+import Product from "@/components/Product.js";
 import Head from "next/head";
 import Link from "next/link";
 import { useQuery } from "urql";
@@ -23,7 +24,7 @@ export default function Home() {
 			<main>
 				<h1>Hello next</h1>
 				{products.map((product)=>(
-					<h1>{product.attributes.title}</h1>
+					<Product key={product.attributes.slug} product={product}/>
 				))}
 				<Link href={"/about"}>About</Link>
 			</main>
