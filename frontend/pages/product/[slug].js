@@ -3,7 +3,11 @@ import { GET_PRODUCT_QUERY } from "@/lib/query";
 import { useRouter } from "next/router";
 import { DetailsStyle,ProductInfo,Quantity, Buy } from "@/styles/ProductDetails";
 import {AiFillMinusCircle, AiFillPlusCircle} from "react-icons/ai"
+import { useStateContext } from "@/lib/context";
 export default function ProductDeatails() {
+	//Use state
+  const {qty,increaseQty, decreaseQty,cartItems, onAdd}=useStateContext()
+ 
 	//Fetch the slug
 	const {query}=useRouter();
 
@@ -31,11 +35,11 @@ export default function ProductDeatails() {
 		
 		<Quantity>
 			<span>Quantity</span>
-			<button><AiFillPlusCircle/></button>
-			<p>0</p>
-			<button><AiFillMinusCircle/></button>
+			<button><AiFillMinusCircle onClick={decreaseQty}/></button>
+			<p>{qty}</p>
+			<button><AiFillPlusCircle onClick={increaseQty}/></button>
 		</Quantity>
-		<Buy>Add to Cart</Buy>
+		<Buy onClick={()=>onAdd(data.products.data[0].attributes, qty)}>Add to Cart</Buy>
 		</ProductInfo>	
 	</DetailsStyle>
 	
